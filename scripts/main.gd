@@ -88,7 +88,6 @@ func on_x_value_changed(value):
   # Scale each selected object to the new x value.
   for object in get_selected_objects():
     object.global_scale.x = value
-    select_tool.EnableTransformBox(true)
 
 
 func on_y_value_changed(value):
@@ -99,7 +98,6 @@ func on_y_value_changed(value):
   # Scale each selected object to the new y value.
   for object in get_selected_objects():
     object.global_scale.y = value
-    select_tool.EnableTransformBox(true)
 
 
 func on_object_scale_changed(value):
