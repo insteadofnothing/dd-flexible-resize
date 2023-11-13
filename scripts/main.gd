@@ -85,9 +85,14 @@ func on_x_value_changed(value):
   if select_tool.manualAction:
     return
 
+  # Avoid scaling if the select tool is performing an operation.
+  if select_tool.isDrawing or select_tool.transformMode != 0:
+    return
+
   # Scale each selected object to the new x value.
   for object in get_selected_objects():
     object.global_scale.x = value
+    select_tool.EnableTransformBox(true)
 
 
 func on_y_value_changed(value):
@@ -95,9 +100,14 @@ func on_y_value_changed(value):
   if select_tool.manualAction:
     return
 
+  # Avoid scaling if the select tool is performing an operation.
+  if select_tool.isDrawing or select_tool.transformMode != 0:
+    return
+
   # Scale each selected object to the new y value.
   for object in get_selected_objects():
     object.global_scale.y = value
+    select_tool.EnableTransformBox(true)
 
 
 func on_object_scale_changed(value):
