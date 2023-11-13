@@ -180,12 +180,12 @@ func init_object_scales():
   # Add the x and y scales to the object tool panel and register the signal.
   object_panel.CreateLabel("X Scale")
   object_panel.Align.move_child(get_last_added(object_panel), 8)
-  object_x_scale = object_panel.CreateSlider("XSliderID", 1, 0.1, 25, 0.01, true)
+  object_x_scale = object_panel.CreateSlider("XSliderID", 1, 0.1, 4, 0.01, true)
   object_panel.Align.move_child(get_last_added(object_panel), 9)
 
   object_panel.CreateLabel("Y Scale")
   object_panel.Align.move_child(get_last_added(object_panel), 10)
-  object_y_scale = object_panel.CreateSlider("YSliderID", 1, 0.1, 25, 0.01, true)
+  object_y_scale = object_panel.CreateSlider("YSliderID", 1, 0.1, 4, 0.01, true)
   object_panel.Align.move_child(get_last_added(object_panel), 11)
 
   var object_scale = get_object_scale_slider()
