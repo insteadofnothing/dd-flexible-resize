@@ -75,6 +75,7 @@ func remove_scales():
   for child in scale_children:
     select_panel.Align.remove_child(child)
 
+
 func get_last_added(tool_panel):
   # Get the last item added to the panel, since it isn't always returned.
   return tool_panel.Align.get_children()[len(tool_panel.Align.get_children()) - 1]
@@ -111,10 +112,23 @@ func on_y_value_changed(value):
 
 
 func on_object_scale_changed(value):
-  # Set the x and y scale values to the vanilla scale if the user has changed
-  # it manually.
+  # Set the x and y scale values to the vanilla scale if the user has
+  # changed it manually.
   object_x_scale.value = value
   object_y_scale.value = value
+
+
+func on_select_scale_click(e):
+  # Save the current scale to the undo history when the user clicks a slider.
+  if e is InputEventMouseButton and e.button_index == BUTTON_LEFT and e.pressed:
+    select_tool.SavePreTransforms()
+    select_tool.RecordTransforms()
+
+
+func on_box_change(value):
+  if get_selected_objects():
+    select_tool.SavePreTransforms()
+    select_tool.RecordTransforms()
 
 
 func init_select_scales():
@@ -140,12 +154,27 @@ func init_select_scales():
   scale_children.invert()
   remove_scales()
 
+
+  # Connect signals for handing undo history.
+  select_x_scale.connect("gui_input", self, "on_select_scale_click")
+  select_y_scale.connect("gui_input", self, "on_select_scale_click")
+
+  for child in select_x_scale.get_parent().get_children():
+    if child is SpinBox:
+      child.get_line_edit().connect("text_entered", self, "on_box_change")
+
+
+  for child in select_y_scale.get_parent().get_children():
+    if child is SpinBox:
+      child.get_line_edit().connect("text_entered", self, "on_box_change")
+
 func get_object_scale_slider():
   # Get the scale slider using a hard-coded children index.
 
   # The scale slider is currently the first child of an HBoxContainer located
   # at index 7. Other mods or changes to Dungeondraft may break this.
   return object_panel.Align.get_children()[7].get_children()[0]
+
 
 func init_object_scales():
   # Add the x and y scales to the object tool panel and register the signal.
