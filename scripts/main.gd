@@ -30,7 +30,7 @@ func get_icon(name: String) -> String:
   return Global.Root + "icons/" + name + ".png"
 
 
-func get_selected_objects():
+func get_selected_objects() -> Array:
   # Returns all currently selected objects.
   var objects = []
   # Selectables will crash if the user has shift-clicked and selected the same
@@ -42,7 +42,7 @@ func get_selected_objects():
   return objects
 
 
-func update(delta):
+func update(delta: float):
   # Add the UI when objects are selected, and remove it when they aren't.
   var selected = get_selected_objects()
   if len(selected) > 0 and sliders_off:
@@ -81,7 +81,7 @@ func get_last_added(tool_panel):
   return tool_panel.Align.get_children()[len(tool_panel.Align.get_children()) - 1]
 
 
-func on_x_value_changed(value):
+func on_x_value_changed(value: float):
   # Return if this is just a manual move (no selection box).
   if select_tool.manualAction:
     return
@@ -96,7 +96,7 @@ func on_x_value_changed(value):
     select_tool.EnableTransformBox(true)
 
 
-func on_y_value_changed(value):
+func on_y_value_changed(value: float):
   # Return if this is just a manual move (no selection box).
   if select_tool.manualAction:
     return
@@ -111,21 +111,21 @@ func on_y_value_changed(value):
     select_tool.EnableTransformBox(true)
 
 
-func on_object_scale_changed(value):
+func on_object_scale_changed(value: float):
   # Set the x and y scale values to the vanilla scale if the user has
   # changed it manually.
   object_x_scale.value = value
   object_y_scale.value = value
 
 
-func on_select_scale_click(e):
+func on_select_scale_click(e: InputEvent):
   # Save the current scale to the undo history when the user clicks a slider.
   if e is InputEventMouseButton and e.button_index == BUTTON_LEFT and e.pressed:
     select_tool.SavePreTransforms()
     select_tool.RecordTransforms()
 
 
-func on_box_change(value):
+func on_box_change(value: float):
   if get_selected_objects():
     select_tool.SavePreTransforms()
     select_tool.RecordTransforms()
@@ -200,4 +200,3 @@ func start():
   object_tool = Global.Editor.Tools["ObjectTool"]
   object_panel = Global.Editor.Toolset.GetToolPanel("ObjectTool")
   init_object_scales()
-
